@@ -13,19 +13,19 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"TC_01 Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Response booking is correct\", function () {\r",
+							"pm.test(\"TC_02 Response booking is correct\", function () {\r",
 							"    var booking = pm.response.json().booking;\r",
 							"    pm.expect(booking.firstname, \"unexpected firstname\").to.eql(pm.variables.get(\"firstname\"));\r",
 							"    pm.expect(booking.lastname, \"unexpected lastname\").to.eql(pm.variables.get(\"lastname\"));\r",
 							"    pm.expect(booking.totalprice, \"unexpected totalprice\").to.eql(pm.variables.get(\"totalprice\"));\r",
 							"    pm.expect(booking.depositpaid, \"unexpected depositpaid\").to.eql(pm.variables.get(\"depositpaid\"));\r",
 							"    pm.expect(booking.bookingdates.checkin, \"unexpected checkin\").to.eql(pm.variables.get(\"checkin\"));\r",
-							"    //pm.expect(booking.bookingdates.checkout, \"unexpected checkout\").to.eql(pm.variables.get(\"checkout\"));\r",
-							"    //pm.expect(booking.additionalneeds, \"unexpected additionalneeds\").to.eql(pm.variables.get(\"additionalneeds\"));\r",
+							"    pm.expect(booking.bookingdates.checkout, \"unexpected checkout\").to.eql(pm.variables.get(\"checkout\"));\r",
+							"    pm.expect(booking.additionalneeds, \"unexpected additionalneeds\").to.eql(pm.variables.get(\"additionalneeds\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -35,7 +35,16 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
+							"//PRINT all collection var's\r",
+							"console.log(\"rb1_url: \" + pm.variables.get(\"rb1_url\"));\r",
+							"console.log(\"new_booking: \" + pm.variables.get(\"new_booking\"));\r",
+							"console.log(\"firstname: \" + pm.variables.get(\"firstname\"));\r",
+							"console.log(\"lastname: \" + pm.variables.get(\"lastname\"));\r",
+							"console.log(\"totalprice: \" + pm.variables.get(\"totalprice\"));\r",
+							"console.log(\"depositpaid: \" + pm.variables.get(\"depositpaid\"));\r",
+							"console.log(\"checkin date: \" + pm.variables.get(\"checkin\"));\r",
+							"console.log(\"checkout date: \" + pm.variables.get(\"checkout\"));\r",
+							"console.log(\"additionalneeds: \" + pm.variables.get(\"additionalneeds\"));"
 						],
 						"type": "text/javascript"
 					}
