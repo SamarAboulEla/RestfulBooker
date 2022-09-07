@@ -19,13 +19,12 @@
 							"\r",
 							"pm.test(\"TC_02 Response booking is correct\", function () {\r",
 							"    var booking = pm.response.json().booking;\r",
-							"    pm.expect(booking.firstname, \"unexpected firstname\").to.eql(pm.variables.get(\"firstname\"));\r",
-							"    pm.expect(booking.lastname, \"unexpected lastname\").to.eql(pm.variables.get(\"lastname\"));\r",
-							"    pm.expect(booking.totalprice, \"unexpected totalprice\").to.eql(pm.variables.get(\"totalprice\"));\r",
-							"    pm.expect(booking.depositpaid, \"unexpected depositpaid\").to.eql(pm.variables.get(\"depositpaid\"));\r",
-							"    pm.expect(booking.bookingdates.checkin, \"unexpected checkin\").to.eql(pm.variables.get(\"checkin\"));\r",
-							"    pm.expect(booking.bookingdates.checkout, \"unexpected checkout\").to.eql(pm.variables.get(\"checkout\"));\r",
-							"    pm.expect(booking.additionalneeds, \"unexpected additionalneeds\").to.eql(pm.variables.get(\"additionalneeds\"));\r",
+							"    pm.expect(booking.firstname, \"unexpected firstname\").to.eql(pm.globals.get(\"firstname\"));\r",
+							"    pm.expect(booking.lastname, \"unexpected lastname\").to.eql(pm.globals.get(\"lastname\"));\r",
+							"    pm.expect(booking.totalprice, \"unexpected totalprice\").to.eql(pm.globals.get(\"totalprice\"));\r",
+							"    pm.expect(booking.depositpaid, \"unexpected depositpaid\").to.eql(pm.globals.get(\"depositpaid\"));\r",
+							"    pm.expect(booking.bookingdates.checkin, \"unexpected checkin\").to.eql(pm.globals.get(\"checkin\"));\r",
+							"    pm.expect(booking.bookingdates.checkout, \"unexpected checkout\").to.eql(pm.globals.get(\"checkout\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -35,16 +34,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"//PRINT all collection var's\r",
-							"console.log(\"rb1_url: \" + pm.variables.get(\"rb1_url\"));\r",
-							"console.log(\"new_booking: \" + pm.variables.get(\"new_booking\"));\r",
-							"console.log(\"firstname: \" + pm.variables.get(\"firstname\"));\r",
-							"console.log(\"lastname: \" + pm.variables.get(\"lastname\"));\r",
-							"console.log(\"totalprice: \" + pm.variables.get(\"totalprice\"));\r",
-							"console.log(\"depositpaid: \" + pm.variables.get(\"depositpaid\"));\r",
-							"console.log(\"checkin date: \" + pm.variables.get(\"checkin\"));\r",
-							"console.log(\"checkout date: \" + pm.variables.get(\"checkout\"));\r",
-							"console.log(\"additionalneeds: \" + pm.variables.get(\"additionalneeds\"));"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -60,7 +50,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{totalprice}},\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\" : \"{{additionalneeds}}\"\n}",
+					"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{totalprice}},\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -68,9 +58,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{rb1_url}}/booking",
+					"raw": "https://restful-booker.herokuapp.com/booking",
+					"protocol": "https",
 					"host": [
-						"{{rb1_url}}"
+						"restful-booker",
+						"herokuapp",
+						"com"
 					],
 					"path": [
 						"booking"
@@ -90,39 +83,49 @@
 					"var lastnames = [\"Andrew\", \"Bob\", \"Chris\", \"Dave\", \"Eric\"];",
 					"var needsList = [\"breakfast\", \"lunch\", \"dinner\", null];",
 					"",
-					"pm.collectionVariables.set(\"firstname\", ",
+					"pm.globals.set(\"firstname\", ",
 					"        firstnames[_.random(firstnames.length-1)]);",
 					"        ",
-					"pm.collectionVariables.set(\"lastname\", ",
+					"pm.globals.set(\"lastname\", ",
 					"        lastnames[_.random(lastnames.length-1)]);",
 					"",
-					"pm.collectionVariables.set(\"additionalneeds\",",
+					"pm.globals.set(\"additionalneeds\",",
 					"        needsList[_.random(needsList.length-1)]);",
 					"        ",
-					"pm.collectionVariables.set(\"totalprice\",_.random(50,250));",
-					"pm.collectionVariables.set(\"depositpaid\", (_.random(1) === 1 ));",
+					"pm.globals.set(\"totalprice\",_.random(50,250));",
+					"pm.globals.set(\"depositpaid\", (_.random(1) === 1 ));",
 					"",
 					"const moment = require(\"moment\");",
 					"var checkin = moment().add(\"days\",_.random(1,180));",
-					"pm.collectionVariables.set(\"checkin\",checkin.format(\"YYYY-MM-DD\"));",
+					"pm.globals.set(\"checkin\",checkin.format(\"YYYY-MM-DD\"));",
 					"",
 					"var checkout = moment().add(\"days\",_.random(1,14));",
-					"pm.collectionVariables.set(\"checkout\",checkout.format(\"YYYY-MM-DD\"));",
+					"pm.globals.set(\"checkout\",checkout.format(\"YYYY-MM-DD\"));",
 					"",
 					"var booking  = ",
 					"{",
-					"    \"firstname\" : pm.variables.get(\"firstname\"),",
-					"    \"lastname\" : pm.variables.get(\"lastname\"),",
-					"    \"totalprice\" : pm.variables.get(\"totalprice\"),",
-					"    \"depositpaid\" : pm.variables.get(\"depositpaid\"),",
+					"    \"firstname\" : pm.globals.get(\"firstname\"),",
+					"    \"lastname\" : pm.globals.get(\"lastname\"),",
+					"    \"totalprice\" : pm.globals.get(\"totalprice\"),",
+					"    \"depositpaid\" : pm.globals.get(\"depositpaid\"),",
 					"    \"bookingdates\" : {",
-					"        \"checkin\" : pm.variables.get(\"checkin\"),",
-					"        \"checkout\" : pm.variables.get(\"checkout\"),",
+					"        \"checkin\" : pm.globals.get(\"checkin\"),",
+					"        \"checkout\" : pm.globals.get(\"checkout\"),",
 					"    },",
-					"    \"additionalneeds\" : pm.variables.get(\"additionalneeds\"),",
+					"    \"additionalneeds\" : pm.globals.get(\"additionalneeds\"),",
 					"}",
 					"",
 					"pm.collectionVariables.set(\"new_booking\",booking);",
+					"",
+					"//PRINT all collection var's",
+					"console.log(\"new_booking: \" + pm.globals.get(\"new_booking\"));",
+					"console.log(\"firstname: \" + pm.globals.get(\"firstname\"));",
+					"console.log(\"lastname: \" + pm.globals.get(\"lastname\"));",
+					"console.log(\"totalprice: \" + pm.globals.get(\"totalprice\"));",
+					"console.log(\"depositpaid: \" + pm.globals.get(\"depositpaid\"));",
+					"console.log(\"checkin date: \" + pm.globals.get(\"checkin\"));",
+					"console.log(\"checkout date: \" + pm.globals.get(\"checkout\"));",
+					"console.log(\"additionalneeds: \" + pm.globals.get(\"additionalneeds\"));",
 					""
 				]
 			}
@@ -139,41 +142,8 @@
 	],
 	"variable": [
 		{
-			"key": "firstname",
-			"value": ""
-		},
-		{
-			"key": "lastname",
-			"value": ""
-		},
-		{
-			"key": "additionalneeds",
-			"value": ""
-		},
-		{
-			"key": "totalprice",
-			"value": ""
-		},
-		{
-			"key": "depositpaid",
-			"value": ""
-		},
-		{
-			"key": "checkin",
-			"value": ""
-		},
-		{
-			"key": "checkout",
-			"value": ""
-		},
-		{
 			"key": "new_booking",
 			"value": ""
-		},
-		{
-			"key": "rb1_url",
-			"value": "",
-			"type": "string"
 		}
 	]
 }
