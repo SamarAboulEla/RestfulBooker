@@ -115,7 +115,7 @@
 					"    \"additionalneeds\" : pm.globals.get(\"additionalneeds\"),",
 					"}",
 					"",
-					"pm.collectionVariables.set(\"new_booking\",booking);",
+					"pm.globals.set(\"new_booking\",booking);",
 					"",
 					"//PRINT all collection var's",
 					"console.log(\"new_booking: \" + pm.globals.get(\"new_booking\"));",
